@@ -72,6 +72,27 @@
             "redirectTo": "/profile/student"
             }
         },
+         {
+            "udise-link": {
+                "api": "/v1/school/verify",
+               
+                "formclass": "row",
+                "header": "default",
+                 "title": "LINK_YOUR_UDISE",
+               
+                    "type": "object",
+                    "required": ["udiseId", "password"],
+                    "properties": {
+                      "udiseId": { "type": "string", "title": "UDISE_ID" },
+                      "password": { "type": "string", "title": "PASSWORD", "minLength": 3 }
+                     
+                    },
+                  
+                "langKey" : "udise",
+              
+                "redirectTo": "/profile/student"
+            }
+        },
         {
             "student-setup": {
                 "api": "/Student",

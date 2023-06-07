@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center align-items-center">
+  <!-- <div class="d-flex justify-content-center align-items-center">
   <form [formGroup]="udiseLinkForm" (ngSubmit)="verifyUDISE()" class="m-4 p-4">
     <h5 class="py-3 text-center">{{'LINK_YOUR_UDISE' | translate}}</h5>
     <div class="form-group">
@@ -19,4 +19,18 @@
     </div>
     <button class="btn btn-primary fs-12 mt-4 d-flex m-auto" [disabled]="udiseLinkForm.invalid || isFormSubmitted" type="submit">{{'LINK_NOW' | translate}}</button>
   </form>
-</div>
+</div>    -->
+
+
+
+ 
+
+
+<form [formGroup]="udiseLinkForm" (ngSubmit)="verifyUDISE()" class="m-4 p-4">
+<h5 class="py-3 text-center">{{ 'LINK_YOUR_UDISE' | translate }}</h5>
+<formly-form [model]="model" [fields]="fields" [options]="options" [form]="form"></formly-form>
+<button class="btn btn-primary fs-12 mt-4 d-flex m-auto" [disabled]="!fields.length" type="submit">
+ {{ 'LINK_NOW' | translate }}
+</button>
+</form>
+

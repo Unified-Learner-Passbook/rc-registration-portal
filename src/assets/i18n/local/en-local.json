@@ -147,5 +147,10 @@
         "address": "Address",
         "pinCode": "Pin Code",
         "DOB": "Date of Birth"
+    },
+    "udise":{
+        "LINK_YOUR_UDISE": "Link Your UDISE",
+        "UDISE_ID": "UDISE Id",
+        "PASSWORD": "Password"
     }
 }
