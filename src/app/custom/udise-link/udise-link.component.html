@@ -29,8 +29,8 @@
 <form [formGroup]="udiseLinkForm" (ngSubmit)="verifyUDISE()" class="m-4 p-4">
 <h5 class="py-3 text-center">{{ 'LINK_YOUR_UDISE' | translate }}</h5>
 <formly-form [model]="model" [fields]="fields" [options]="options" [form]="form"></formly-form>
-<button class="btn btn-primary fs-12 mt-4 d-flex m-auto" [disabled]="!fields.length" type="submit">
- {{ 'LINK_NOW' | translate }}
+<button class="btn btn-primary fs-12 mt-4 d-flex m-auto" [disabled]="!form.valid" type="submit">
+ {{ 'SUBMIT' | translate }}
 </button>
 </form>
 

@@ -2,10 +2,15 @@ import { Injectable } from '@angular/core';
 import { DataService } from '../data/data-request.service';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subscriber } from 'rxjs';
+import { BehaviorSubject, Observable, Subscriber } from 'rxjs';
 import { AppConfig } from 'src/app/app.config';
 import { TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs/operators';
+import { FormGroup } from '@angular/forms';
+import { Router } from "@angular/router";
+import { ToastMessageService } from "src/app/services/toast-message/toast-message.service";
+import { SchemaService } from "src/app/services/data/schema.service";
+
 
 
 @Injectable({
@@ -15,8 +20,10 @@ export class GeneralService {
   baseUrl = this.config.getEnv('baseUrl');
   bffUrl = this.config.getEnv('bffUrl');
   translatedString: string;
+  private _pendingRequestCount = new BehaviorSubject<any>({ count: 0 });
+  private _pendingRequestCount$ = this._pendingRequestCount.asObservable();
   constructor(public dataService: DataService, 
-    private http: HttpClient, private config: AppConfig, public translate: TranslateService) {
+    private http: HttpClient, private config: AppConfig, public translate: TranslateService, private readonly router: Router, private toastMessage:ToastMessageService, public schemaService: SchemaService) {
   }
 
   postData(apiUrl, data, isBFF = false) {
@@ -38,7 +45,7 @@ export class GeneralService {
   getDocument(url: string): Observable<any> {
     return this.dataService.getDocument(url);
   }
-
+ 
 
   getData(apiUrl, outside: boolean = false) {
     var url;
@@ -150,6 +157,73 @@ export class GeneralService {
     })).subscribe((result: any) => {
     });
   }
+
+  getPendingRequestCount() {
+    return this._pendingRequestCount$;
+  }
   
+  setLanguage(langKey: string) {
+    localStorage.setItem('setLanguage', langKey);
+    this.translate.use(langKey);
+  }
+
+
+  postStudentData(apiUrl, data) {
+    const req = {
+      url: `${this.baseUrl}/v1/sso/studentDetailV2`,
+      data: data
+    };
+}
+
+submitForm(formDetails, payload) {
+  
+  var form = formDetails['form'];
+  let isFormSubmitted = formDetails['isFormSubmitted'];
+  var api = formDetails['api'];
+
+  if (form.invalid) {
+    // return;
+  }
+  isFormSubmitted = true;
+
+  // this.router.navigate(['/form/instructor-signup']);
+  this.postData(api, payload, true).subscribe(
+
+    (res: any) => {
+      isFormSubmitted = false;
+      this.router.navigate(["/form/udise-link"]);
+      if (res?.status) {
+        if (res?.response?.data) {
+          localStorage.setItem(
+            "instituteDetails",
+            JSON.stringify(res.response.data)
+          );
+          this.router.navigate(["/form/instructor-signup"]);
+        }
+      } else {
+        this.toastMessage.error(
+          "",
+          this.translateString(
+            "INVALID_SCHOOL_UDISE_OR_PASSWORD"
+          )
+        );
+      }
+    },
+    (error) => {
+      isFormSubmitted = false;
+      console.error(error);
+      this.toastMessage.error(
+        "",
+        this.translateString(
+          "INVALID_SCHOOL_UDISE_OR_PASSWORD"
+        )
+      );
+    }
+  );
+}
+
+
+
+
 }
 

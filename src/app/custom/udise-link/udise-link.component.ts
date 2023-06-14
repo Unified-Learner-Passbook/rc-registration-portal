@@ -54,12 +54,14 @@ export class UdiseLinkComponent implements OnInit {
           return Object.keys(obj)[0] === selectedForm;
         });
         this.formSchema = filtered[0][selectedForm];
-        this.formSchema.title = this.translate.instant("LINK_YOUR_UDISE");
+        this.formSchema.title = this.translate.instant(this.formSchema.title);
 
-        this.formSchema.properties.udiseId.title =
-          this.translate.instant("UDISE_ID");
-        this.formSchema.properties.password.title =
-          this.translate.instant("PASSWORD");
+        Object.keys(this.formSchema.properties).forEach((key) => {
+          if (this.formSchema.properties[key].title) {
+            this.formSchema.properties[key].title = this.translate.instant(this.formSchema.properties[key].title);
+          }
+        });
+
         this.fields = [this.formlyJsonschema.toFieldConfig(this.formSchema)];
 
         this.templatePath = filtered[0][selectedForm]["template"];
@@ -74,10 +76,10 @@ export class UdiseLinkComponent implements OnInit {
   }
 
   verifyUDISE() {
-    if (this.udiseLinkForm.invalid) {
-      // return;
-    }
-    this.isFormSubmitted = true;
+    var formDetails = [];
+    formDetails['form'] = this.udiseLinkForm;
+    formDetails['isFormSubmitted'] = this.isFormSubmitted;
+    formDetails['api'] = this.formSchema.api;
     const payload = {
       requestbody: {
         udiseCode: this.model["udiseId"],
@@ -85,39 +87,8 @@ export class UdiseLinkComponent implements OnInit {
       password: this.model["password"],
     };
 
-    // this.router.navigate(['/form/instructor-signup']);
-
-    this.generalService.postData("/v1/school/verify", payload, true).subscribe(
-      (res: any) => {
-        this.isFormSubmitted = false;
-        this.router.navigate(["/form/udise-link"]);
-        if (res?.status) {
-          if (res?.response?.data) {
-            localStorage.setItem(
-              "instituteDetails",
-              JSON.stringify(res.response.data)
-            );
-            this.router.navigate(["/form/instructor-signup"]);
-          }
-        } else {
-          this.toastMessage.error(
-            "",
-            this.generalService.translateString(
-              "INVALID_SCHOOL_UDISE_OR_PASSWORD"
-            )
-          );
-        }
-      },
-      (error) => {
-        this.isFormSubmitted = false;
-        console.error(error);
-        this.toastMessage.error(
-          "",
-          this.generalService.translateString(
-            "INVALID_SCHOOL_UDISE_OR_PASSWORD"
-          )
-        );
-      }
-    );
+    this.generalService.submitForm(formDetails,payload);
   }
+
+ 
 }
