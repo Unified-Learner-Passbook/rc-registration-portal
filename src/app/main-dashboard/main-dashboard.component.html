@@ -1,11 +1,6 @@
 <app-header [headerFor]='headerName' [showTitle]="showTitle"></app-header>
-<div class="position-relative">
-  <i class="fa sidebar-icon cursor-pointer" [ngClass]="sidebarToggle ? 'fa-angle-left' : 'fa-angle-right'"
-    (click)="toggleSidebarMenu()" data-toggle="collapse" data-target="#collapseWidthExample" aria-expanded="false"
-    aria-controls="collapseWidthExample"></i>
-</div>
 <section>
-  <div class="text-float">
+  <div class="text-float col-sm-3">
     <aside class="collapse width show sidebar-collapse" id="collapseWidthExample">
       <app-sidebar></app-sidebar>
     </aside>
