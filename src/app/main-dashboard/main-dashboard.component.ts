@@ -61,9 +61,6 @@ export class MainDashboardComponent implements OnInit {
   ngOnInit(): void {
     // this.getMetrics();
   }
-  toggleSidebarMenu() {
-    this.sidebarToggle = !this.sidebarToggle;
-  }
 
   getMetrics() {
     const payload = {

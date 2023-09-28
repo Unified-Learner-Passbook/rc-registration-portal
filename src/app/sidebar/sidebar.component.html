@@ -11,7 +11,7 @@
           <div class="title">{{item?.title | translate}}</div>
         </div>
         <i class="fa sidebar-icon cursor-pointer" [ngClass]="sidebarToggle ? 'fa-angle-left' : 'fa-angle-right'"
-      (click)="toggleSidebarMenu()" data-toggle="collapse" data-target="#collapseWidthExample" aria-expanded="false"
+      data-toggle="collapse" data-target="#collapseWidthExample" aria-expanded="false"
       aria-controls="collapseWidthExample"></i>
       </ng-container>
       <ng-container *ngIf="!isKYCCompleted">
